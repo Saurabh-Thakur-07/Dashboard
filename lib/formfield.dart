@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_app/provider/create_model.dart';
+import 'package:sample_app/provider/dropdown.dart';
 import 'package:sample_app/style/colors.dart';
 import 'package:sample_app/style/style.dart';
 
@@ -105,19 +106,24 @@ class _FormFieldState extends State<FormField> {
                       title: Row(children: [
                         Expanded(flex: 1, child: Text('Roletype')),
                         Expanded(
-                          flex: 1,
-                          child: DropdownButton<String>(
-                            value: createRoletype,
-                            items: mappedItems
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                  value: value, child: Text(value));
-                            }).toList(),
-                            onChanged: (String? newValue) {
-                              createRoletype = newValue!;
-                            },
-                          ),
-                        ),
+                            flex: 1,
+                            child: Consumer<DropDownProvider>(
+                              builder: (context, value, child) {
+                                return DropdownButton<String>(
+                                  value: createRoletype,
+                                  items: mappedItems
+                                      .map<DropdownMenuItem<String>>(
+                                          (String value) {
+                                    return DropdownMenuItem<String>(
+                                        value: value, child: Text(value));
+                                  }).toList(),
+                                  onChanged: (String? newValue) {
+                                    createRoletype = newValue!;
+                                    value.setSelectedItem(createRoletype);
+                                  },
+                                );
+                              },
+                            )),
                       ]),
                     ),
                     ListTile(
@@ -203,13 +209,11 @@ class _updatingUIState extends State<updatingUI> {
   String? updateRolename;
   @override
   Widget build(BuildContext context) {
-    String? dropdownValue = mappedItems.first;
+    String? dropdownValue =
+        Provider.of<CreateModel>(context).list[index!].roletype;
     return ExpansionTile(
       title: Row(children: [
-        Expanded(
-            flex: 1,
-            child:
-                Text(list[index!].rolename!)),
+        Expanded(flex: 1, child: Text(list[index!].rolename!)),
         Expanded(
           flex: 1,
           child: Text(list[index!].roletype!),
@@ -238,21 +242,24 @@ class _updatingUIState extends State<updatingUI> {
           title: Row(children: [
             Expanded(flex: 1, child: Text('Roletype')),
             Expanded(
-              flex: 1,
-              child: DropdownButton<String>(
-                value: dropdownValue,
-                items: Provider.of<CreateModel>(context)
-                    .mappedItems
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                      value: value, child: Text(value));
-                }).toList(),
-                onChanged: (String? newValue) {
-                  dropdownValue = newValue ?? '';
-                  print('drop down value is $dropdownValue');
-                },
-              ),
-            ),
+                flex: 1,
+                child: Consumer<DropDownProvider>(
+                  builder: (context, value, child) {
+                    return DropdownButton<String>(
+                      value: dropdownValue,
+                      items: Provider.of<CreateModel>(context)
+                          .mappedItems
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                            value: value, child: Text(value));
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        dropdownValue = newValue ?? '';
+                        value.setSelectedItem(dropdownValue!);
+                      },
+                    );
+                  },
+                )),
           ]),
         ),
         ListTile(

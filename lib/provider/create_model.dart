@@ -41,7 +41,7 @@ class CreateModel extends ChangeNotifier {
         headers: {"Content-Type": "application/json"},
         body: body);
     var receivedData = json.decode(response.body);
-    // print(receivedData);
+    print(receivedData);
     readData();
   }
 
@@ -56,7 +56,7 @@ class CreateModel extends ChangeNotifier {
         headers: {"Content-Type": "application/json"},
         body: body);
     var receivedData = json.decode(response.body);
-    // print(receivedData);
+    print(receivedData);
     for (var d in receivedData) {
       Contact c = Contact(d["rolecode"], d["rolename"], d["roletype"]);
       items.add(d["roletype"]);
@@ -66,7 +66,7 @@ class CreateModel extends ChangeNotifier {
     items.forEach((item) {
       mappedItems.add(item);
     });
-    // print(items);
+    print(items);
     notifyListeners();
   }
 

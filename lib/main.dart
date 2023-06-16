@@ -7,7 +7,7 @@ import 'leftpanel.dart';
 import 'middlepanel.dart';
 import 'style/style.dart';
 
-void main() {
+  void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => CreateModel()),
     ChangeNotifierProvider(create: (_) => DropDownProvider()),

@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sample_app/provider/create_model.dart';
+import 'package:sample_app/provider/dropdown.dart';
 import 'package:sample_app/style/colors.dart';
-
 import 'leftpanel.dart';
 import 'middlepanel.dart';
-import 'rightpanel.dart';
 import 'style/style.dart';
 
 void main() {
-  runApp(DashboardApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => CreateModel()),
+    ChangeNotifierProvider(create: (_) => DropDownProvider()),
+  ], child: DashboardApp()));
 }
 
 class DashboardApp extends StatelessWidget {
@@ -18,7 +22,7 @@ class DashboardApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
-      ),  
+      ),
       home: DashboardScreen(),
     );
   }
@@ -69,56 +73,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 }
 
-// class LeftPanel extends StatelessWidget {
-//   final Function()? toggleMenu;
-
-//   const LeftPanel({required this.toggleMenu});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       width: 100,
-//       color: Colors.blue,
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           ListTile(
-//             title: Text('Menu'),
-//           ),
-//           ListTile(
-//             title: Text('Item 1'),
-//             onTap: toggleMenu,
-//           ),
-//           ListTile(
-//             title: Text('Item 2'),
-//             onTap: toggleMenu,
-//           ),
-//           ListTile(
-//             title: Text('Item 3'),
-//             onTap: toggleMenu,
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// class MiddlePanel extends StatelessWidget {
-//   final bool isMenuSelected;
-
-//   const MiddlePanel({required this.isMenuSelected});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       color: Colors.grey,
-//       child: Center(
-//         child: isMenuSelected ? FormFields() : SizedBox(),
-//       ),
-//     );
-//   }
-// }
-
 class RightPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -130,41 +84,6 @@ class RightPanel extends StatelessWidget {
     );
   }
 }
-
-// class FormFields extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       children: [
-//         TextField(
-//           decoration: InputDecoration(
-//             labelText: 'Enter a value',
-//           ),
-//         ),
-//         SizedBox(height: 16),
-//         Row(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             ElevatedButton(
-//               onPressed: () {
-//                 // Save button pressed
-//               },
-//               child: Text('Save'),
-//             ),
-//             SizedBox(width: 16),
-//             ElevatedButton(
-//               onPressed: () {
-//                 // Cancel button pressed
-//               },
-//               child: Text('Cancel'),
-//             ),
-//           ],
-//         ),
-//       ],
-//     );
-//   }
-// }
 
 class HomePage extends StatelessWidget {
   @override
@@ -276,8 +195,8 @@ class _ExpandableListViewState extends State<ExpandableListView>
       children: [
         CircleAvatar(
           radius: 20,
-        backgroundColor: Colors.grey,  
-        child: IconButton.outlined(
+          backgroundColor: Colors.grey,
+          child: IconButton.outlined(
             onPressed: toggleExpanded,
             icon: const Icon(Icons.arrow_back),
             color: AppColors.white,
@@ -331,14 +250,14 @@ class DrawerListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: EdgeInsets.only(left: 0, right: 20),
-      visualDensity: VisualDensity.standard,
-      onTap: toggleMenu,
-      // horizontalTitleGap: 0.0,
-      leading:  Container(
-       child: PrimaryText(text: title!, size: 14, fontWeight: FontWeight.w500),
-       padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-      )
-    );
+        contentPadding: EdgeInsets.only(left: 0, right: 20),
+        visualDensity: VisualDensity.standard,
+        onTap: toggleMenu,
+        // horizontalTitleGap: 0.0,
+        leading: Container(
+          child:
+              PrimaryText(text: title!, size: 14, fontWeight: FontWeight.w500),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        ));
   }
 }
